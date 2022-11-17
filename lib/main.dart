@@ -1,37 +1,79 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter 123',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home: SquareAnimation(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
+class SquareAnimation extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SquareAnimation> createState() {
+    return SquareAnimationState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class SquareAnimationState extends State<SquareAnimation> {
+  static const squareSize = 50.0;
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
+    return Column(
+      children: [
+        AnimatedSwitcher(
+          duration: Duration(seconds: 1),
+          child: MyWidget(alignment: Alignment.topCenter),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(onPressed: () {}, child: const Text("To the left")),
+            ElevatedButton(
+                onPressed: () => {}, child: const Text("To the right"))
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  static const squareSize = 50.0;
+  final right = Alignment.topRight;
+  final left = Alignment.topLeft;
+  final Alignment alignment;
+
+  const MyWidget({super.key, required this.alignment});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: Stack(
+        alignment: alignment,
+        children: [
+          Container(
+            width: squareSize,
+            height: squareSize,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              border: Border.all(),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
