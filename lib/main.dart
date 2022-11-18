@@ -1,3 +1,4 @@
+import 'package:application_websocket/screens/mainscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,6 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.grey),
-        home: MainScreen());
+        home: const MainScreen());
   }
 }

@@ -1,10 +1,8 @@
 import 'package:application_websocket/api/api_service.dart';
 import 'package:application_websocket/models/article.dart';
 import 'package:application_websocket/screens/article_screen.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,8 +21,10 @@ class _MainScreenState extends State<MainScreen> {
 
   _getArticles() async {
     List<Article> articles =
-        await APIService().getArticlesSection('automobiles');
-    _articles = articles;
+        await APIService().getArticlesSection('Automobiles');
+    setState(() {
+      _articles = articles;
+    });
   }
 
   @override
@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
     return SizedBox(
       width: mediaQuery.size.width * 0.85,
       child: ListView.builder(
+        itemCount: _articles.length,
         itemBuilder: (context, index) {
           return Material(
             borderRadius: BorderRadius.circular(12),
@@ -41,7 +42,9 @@ class _MainScreenState extends State<MainScreen> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) {
-                    return ArticleScreen(
+                    return  ArticleScreen(
+                      imageURL: _articles[index].imageURL,
+                      summary: _articles[index].summary,
                         // idProductScreen: userSnapshot[int]['id'],
                         //                 priceProductScreen:
                         //                     (userSnapshot[int]['price']).toDouble(),
@@ -63,6 +66,32 @@ class _MainScreenState extends State<MainScreen> {
                   },
                 ));
               },
+              child:
+                  // _articles.length > 0
+                  //     ?
+                  Container(
+                width: mediaQuery.size.width * 0.8,
+                padding: const EdgeInsets.all(6),
+                child: Column(
+                  children: [
+                    Text(_articles[index].summary),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        _articles[index].imageURL,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        // height:
+                        //     MediaQuery.of(context).size.height * 0.12,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                //   )
+                // : const Center(
+                //     child: CircularProgressIndicator(),
+              ),
             ),
           );
         },

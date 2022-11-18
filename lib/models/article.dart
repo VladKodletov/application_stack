@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 class Article {
   final String title;
@@ -16,8 +15,8 @@ class Article {
       map['title'] as String,
       map['byline'] as String,
       map['url'] as String,
-      (map['multimedia'] as String).isNotEmpty
-          ? map['multimedia']['url']
+      ['multimedia'].isNotEmpty
+          ? map['multimedia'][0]['url']
           : 'https://static01.nyt.com/images/2022/11/14/business/tesla-self-driving-flaws-promo/tesla-self-driving-flaws-promo-superJumbo.jpg',
       map['updated_date'] as String,
       map['abstract'] as String,
