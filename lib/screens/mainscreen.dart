@@ -21,15 +21,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _getArticles() async {
-    List<Article> articles =
-        await APIService().getArticlesSection('Automobiles');
+    List<Article> articles = await APIService().getArticlesSection('home');
     setState(() {
       _articles = articles;
     });
   }
 
   _launchURL(String url) async {
-    // final uriFinal = Uri.encodeFull(url);
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -45,14 +43,31 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: const Text('New news'),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          selectedFontSize: 16,
+          selectedItemColor: Colors.black,
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Home',
+              icon: Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorites',
+            ),
+          ]),
       body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-              Colors.yellow.shade600,
-              Colors.yellow.shade900,
+              Colors.blueGrey.shade900,
+              Colors.blueGrey.shade200,
             ], begin: Alignment.bottomCenter, end: Alignment.topLeft),
           ),
-          padding: const EdgeInsets.all(6),
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
           child: _articles.isNotEmpty
               ? ListView.builder(
                   itemCount: _articles.length,
@@ -61,7 +76,6 @@ class _MainScreenState extends State<MainScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              // border: Border.all(),
                               borderRadius: BorderRadius.circular(15)),
                           child: Material(
                             borderRadius: BorderRadius.circular(12),
@@ -80,26 +94,24 @@ class _MainScreenState extends State<MainScreen> {
                                 //   ),
                                 // );
                               },
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.network(
-                                      _articles[index].imageURL,
-                                      width: mediaQuery.size.width,
-                                      height: mediaQuery.size.height * 0.2,
-                                      // height:
-                                      //     MediaQuery.of(context).size.height * 0.12,
-                                      fit: BoxFit.cover,
-                                    ),
+                              child: ListTile(
+                                visualDensity: VisualDensity.standard,
+                                title: Text(
+                                  _articles[index].title,
+                                ),
+                                dense: true,
+                                subtitle: Text(
+                                  _articles[index].summary,
+                                  // textAlign: TextAlign.center,
+                                ),
+                                leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    _articles[index].imageURL,
+                                    width: mediaQuery.size.width * 0.20,
+                                    fit: BoxFit.cover,
                                   ),
-                                  Text(
-                                    _articles[index].summary,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
