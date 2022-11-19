@@ -1,36 +1,35 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ArticleScreen extends StatelessWidget {
-  final String summary;
-  final String imageURL;
+class ArticleScreen extends StatefulWidget {
+  final String url;
 
   const ArticleScreen({
     Key? key,
-    required this.summary,
-    required this.imageURL,
+    required this.url,
   }) : super(key: key);
+
+
+  @override
+  State<ArticleScreen> createState() => _ArticleScreenState();
+}
+
+class _ArticleScreenState extends State<ArticleScreen> {
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Page article')),
-      body: Column(
-        children: [
-          Text(summary),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              imageURL,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.6,
-              // height:
-              //     MediaQuery.of(context).size.height * 0.12,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Page article')),
+      body: Container(),
     );
   }
 }

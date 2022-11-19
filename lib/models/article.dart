@@ -1,4 +1,3 @@
-
 class Article {
   final String title;
   final String byLine;
@@ -16,7 +15,7 @@ class Article {
       map['byline'] as String,
       map['url'] as String,
       ['multimedia'].isNotEmpty
-          ? map['multimedia'][0]['url']
+          ? map['multimedia'][1]['url']
           : 'https://static01.nyt.com/images/2022/11/14/business/tesla-self-driving-flaws-promo/tesla-self-driving-flaws-promo-superJumbo.jpg',
       map['updated_date'] as String,
       map['abstract'] as String,

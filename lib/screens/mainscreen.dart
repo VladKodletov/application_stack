@@ -3,6 +3,7 @@ import 'package:application_websocket/models/article.dart';
 import 'package:application_websocket/screens/article_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -27,75 +28,92 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  _launchURL(String url) async {
+    // final uriFinal = Uri.encodeFull(url);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $uri';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return SizedBox(
-      width: mediaQuery.size.width * 0.85,
-      child: ListView.builder(
-        itemCount: _articles.length,
-        itemBuilder: (context, index) {
-          return Material(
-            borderRadius: BorderRadius.circular(12),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) {
-                    return  ArticleScreen(
-                      imageURL: _articles[index].imageURL,
-                      summary: _articles[index].summary,
-                        // idProductScreen: userSnapshot[int]['id'],
-                        //                 priceProductScreen:
-                        //                     (userSnapshot[int]['price']).toDouble(),
-                        //                 titleProductScreen: userSnapshot[int]
-                        //                     ['title'],
-                        //                 amountProductScreen:
-                        //                     (userSnapshot[int]['amount']).toDouble(),
-                        //                 firstImageUrlProductScreen: userSnapshot[int]
-                        //                     ['firstImageUrl'],
-                        //                 secondImageUrlProductScreen: userSnapshot[int]
-                        //                     ['secondImageUrl'],
-                        //                 thirdImageUrlProductScreen: userSnapshot[int]
-                        //                     ['thirdImageUrl'],
-                        //                 descriptionProductScreen: userSnapshot[int]
-                        //                     ['description'],
-                        //                 isFavoriteProductScreen: userSnapshot[int]
-                        //                     ['isFavorite'],
-                        );
-                  },
-                ));
-              },
-              child:
-                  // _articles.length > 0
-                  //     ?
-                  Container(
-                width: mediaQuery.size.width * 0.8,
-                padding: const EdgeInsets.all(6),
-                child: Column(
-                  children: [
-                    Text(_articles[index].summary),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        _articles[index].imageURL,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        // height:
-                        //     MediaQuery.of(context).size.height * 0.12,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-                //   )
-                // : const Center(
-                //     child: CircularProgressIndicator(),
-              ),
-            ),
-          );
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('New news'),
       ),
+      body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Colors.yellow.shade600,
+              Colors.yellow.shade900,
+            ], begin: Alignment.bottomCenter, end: Alignment.topLeft),
+          ),
+          padding: const EdgeInsets.all(6),
+          child: _articles.isNotEmpty
+              ? ListView.builder(
+                  itemCount: _articles.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              // border: Border.all(),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(12),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () {
+                                _launchURL(_articles[index].urlArticle);
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (context) {
+                                //       return ArticleScreen(
+                                //         url: _articles[index].urlArticle,
+                                //         // summary: _articles[index].summary,
+                                //       );
+                                //     },
+                                //   ),
+                                // );
+                              },
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      _articles[index].imageURL,
+                                      width: mediaQuery.size.width,
+                                      height: mediaQuery.size.height * 0.2,
+                                      // height:
+                                      //     MediaQuery.of(context).size.height * 0.12,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Text(
+                                    _articles[index].summary,
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        )
+                      ],
+                    );
+                  },
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                )),
     );
   }
 }
