@@ -56,10 +56,6 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(Icons.home),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
               label: 'Favorites',
             ),
@@ -71,61 +67,90 @@ class _MainScreenState extends State<MainScreen> {
               Colors.blueGrey.shade200,
             ], begin: Alignment.bottomCenter, end: Alignment.topLeft),
           ),
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: _articles.isNotEmpty
-              ? ListView.builder(
-                  itemCount: _articles.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Material(
-                            borderRadius: BorderRadius.circular(12),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(12),
-                              onTap: () {
-                                _launchURL(_articles[index].urlArticle);
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return ArticleScreen(
-                                //         url: _articles[index].urlArticle,
-                                //         // summary: _articles[index].summary,
-                                //       );
-                                //     },
-                                //   ),
-                                // );
-                              },
-                              child: ListTile(
-                                visualDensity: VisualDensity.standard,
-                                title: Text(
-                                  _articles[index].title,
-                                ),
-                                dense: true,
-                                subtitle: Text(
-                                  _articles[index].summary,
-                                  // textAlign: TextAlign.center,
-                                ),
-                                leading: ClipRRect(
+              ? Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 70.0),
+                      child: ListView.builder(
+                        itemCount: _articles.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Material(
+                                borderRadius: BorderRadius.circular(12),
+                                child: InkWell(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    _articles[index].imageURL,
-                                    width: mediaQuery.size.width * 0.20,
-                                    fit: BoxFit.cover,
+                                  onTap: () {
+                                    _launchURL(_articles[index].urlArticle);
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) {
+                                    //       return ArticleScreen(
+                                    //         url: _articles[index].urlArticle,
+                                    //         // summary: _articles[index].summary,
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // );
+                                  },
+                                  child: ListTile(
+                                    visualDensity: VisualDensity.standard,
+                                    title: Text(
+                                      _articles[index].title,
+                                    ),
+                                    dense: true,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _articles[index].summary,
+                                        ),
+                                        Text(
+                                          _articles[index].sectionArticle,
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        _articles[index].imageURL,
+                                        width: mediaQuery.size.width * 0.20,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
+                              const SizedBox(
+                                height: 5,
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: TextField(
+                        onChanged: (value) {},
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          filled: true,
+                          fillColor: Colors.white.withAlpha(230),
+                          labelText: 'Search',
+                          prefixIcon: const Icon(Icons.search),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
                         ),
-                        const SizedBox(
-                          height: 5,
-                        )
-                      ],
-                    );
-                  },
+                      ),
+                    ),
+                  ],
                 )
               : const Center(
                   child: CircularProgressIndicator(),
