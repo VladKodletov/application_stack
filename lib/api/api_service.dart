@@ -13,11 +13,15 @@ class APIService {
     Uri uri =
         Uri.https(_defaultURL, '/svc/topstories/v2/$section.json', parameters);
     try {
+      List<Article> articles = [];
       var response = await http.get(uri);
       Map<String, dynamic> data = jsonDecode(response.body);
-      List<Article> articles = [];
+
       data['results'].forEach(
-        (articleMap) => articles.add(Article.fromMap(articleMap)),
+        (articleMap) {
+          
+          articles.add(Article.fromMap(articleMap));
+        },
       );
       return articles;
     } catch (error) {

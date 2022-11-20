@@ -12,13 +12,14 @@ class Article {
 
   factory Article.fromMap(Map<String, dynamic> map) {
     return Article(
-      ['title'].isNotEmpty ? map['title'] as String : "",
-      ['byline'].isNotEmpty ? map['byline'] as String : '',
-      ['url'].isNotEmpty ? map['url'] as String : '',
-      ['multimedia'].isNotEmpty ? map['multimedia'][1]['url'] as String : '',
-      ['updated_date'].isNotEmpty ? map['updated_date'] as String : '',
-      ['abstract'].isNotEmpty ? map['abstract'] as String : '',
-      ['section'].isNotEmpty ? map['section'] as String : '',
+      map['title'] as String,
+      map['byline'] as String,
+      map['url'] as String,
+      map['multimedia'][1]['url'] ??
+          'https://dev.jollibeegroup.com/wp-content/themes/main/assets/img/placeholder/no-image-placeholder.jpg',
+      map['updated_date'] as String,
+      map['abstract'] as String,
+      map['section'] as String,
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:application_websocket/api/api_service.dart';
-import 'package:application_websocket/components/bottom_bar.dart';
 import 'package:application_websocket/models/article.dart';
-import 'package:application_websocket/screens/article_screen.dart';
+import 'package:application_websocket/widgets/search.dart';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,6 +14,10 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
+  late final _tabController =
+      TabController(length: section.length, vsync: this);
+  List<Article> _articles = [];
+  bool _loading = true;
   List<String> section = [
     "home",
     "arts",
@@ -22,37 +25,24 @@ class _MainScreenState extends State<MainScreen>
     "business",
     "fashion",
     "food",
-    "health",
     "home",
-    "insider",
-    "magazine",
     "movies",
     "nyregion",
     "obituaries",
     "opinion",
     "politics",
     "realestate",
-    "science",
     "sports",
     "sundayreview",
     "technology",
     "theater",
-    "books",
-    "t - magazine",
-    "travel",
     "upshot",
     "us",
-    "world"
   ];
-
-  late final _tabController =
-      TabController(length: section.length, vsync: this);
-  List<Article> _articles = [];
 
   @override
   void initState() {
     super.initState();
-
     getArticles();
   }
 
@@ -61,6 +51,7 @@ class _MainScreenState extends State<MainScreen>
         await APIService().getArticlesSection(section[_tabController.index]);
     setState(() {
       _articles = articles;
+      _loading = false;
     });
   }
 
@@ -103,8 +94,11 @@ class _MainScreenState extends State<MainScreen>
             ], begin: Alignment.bottomCenter, end: Alignment.topLeft),
           ),
           padding: const EdgeInsets.only(left: 10, right: 10),
-          child: _articles.isNotEmpty
-              ? Stack(
+          child: _loading
+              ? const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                )
+              : Stack(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 120.0),
@@ -162,7 +156,7 @@ class _MainScreenState extends State<MainScreen>
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                               child: Image.network(
-                                                _articles[index].imageURL,
+                                                _articles[index].imageURL!,
                                                 width: mediaQuery.size.width *
                                                     0.20,
                                                 fit: BoxFit.cover,
@@ -186,29 +180,13 @@ class _MainScreenState extends State<MainScreen>
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       child: Column(
                         children: [
-                          TextField(
-                            onChanged: (value) {},
-                            decoration: InputDecoration(
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                              filled: true,
-                              fillColor: Colors.white.withAlpha(230),
-                              labelText: 'Search',
-                              prefixIcon: const Icon(Icons.search),
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                            ),
-                          ),
+                          const SearchWidget(),
                           DefaultTabController(
                             initialIndex: 0,
                             length: section.length,
                             child: TabBar(
                               onTap: (value) {
-                                setState(() {
-                                  _tabController.index = value;
-                                });
+                                _loading = true;
                                 getArticles();
                               },
                               controller: _tabController,
@@ -225,9 +203,6 @@ class _MainScreenState extends State<MainScreen>
                       ),
                     ),
                   ],
-                )
-              : const Center(
-                  child: CircularProgressIndicator(),
                 )),
     );
   }
