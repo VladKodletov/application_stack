@@ -6,36 +6,6 @@ import 'package:application_websocket/screens/article_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-List<String> section = [
-  "home",
-  "arts",
-  "automobiles",
-  "books",
-  "business",
-  "fashion",
-  "food",
-  "health",
-  "home",
-  "insider",
-  "magazine",
-  "movies",
-  "nyregion",
-  "obituaries",
-  "opinion",
-  "politics",
-  "realestate",
-  "science",
-  "sports",
-  "sundayreview",
-  "technology",
-  "theater",
-  "t - magazine",
-  "travel",
-  "upshot",
-  "us",
-  "world"
-];
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -45,6 +15,36 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
+  List<String> section = [
+    "home",
+    "arts",
+    "automobiles",
+    "business",
+    "fashion",
+    "food",
+    "health",
+    "home",
+    "insider",
+    "magazine",
+    "movies",
+    "nyregion",
+    "obituaries",
+    "opinion",
+    "politics",
+    "realestate",
+    "science",
+    "sports",
+    "sundayreview",
+    "technology",
+    "theater",
+    "books",
+    "t - magazine",
+    "travel",
+    "upshot",
+    "us",
+    "world"
+  ];
+
   late final _tabController =
       TabController(length: section.length, vsync: this);
   List<Article> _articles = [];
@@ -57,8 +57,8 @@ class _MainScreenState extends State<MainScreen>
   }
 
   getArticles() async {
-     List<Article> articles =
-        await APIService().getArticlesSection(section[3]);
+    List<Article> articles =
+        await APIService().getArticlesSection(section[_tabController.index]);
     setState(() {
       _articles = articles;
     });
