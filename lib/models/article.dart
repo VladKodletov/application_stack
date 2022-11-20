@@ -12,18 +12,13 @@ class Article {
 
   factory Article.fromMap(Map<String, dynamic> map) {
     return Article(
-      map['title'] as String,
-      map['byline'] as String,
-      map['url'] as String,
-      ['multimedia'].isNotEmpty
-          ? map['multimedia'][1]['url']
-          : 'https://static01.nyt.com/images/2022/11/14/business/tesla-self-driving-flaws-promo/tesla-self-driving-flaws-promo-superJumbo.jpg',
-      map['updated_date'] as String,
-      map['abstract'] as String,
-      map['section'] as String,
+      ['title'].isNotEmpty ? map['title'] as String : "",
+      ['byline'].isNotEmpty ? map['byline'] as String : '',
+      ['url'].isNotEmpty ? map['url'] as String : '',
+      ['multimedia'].isNotEmpty ? map['multimedia'][1]['url'] as String : '',
+      ['updated_date'].isNotEmpty ? map['updated_date'] as String : '',
+      ['abstract'].isNotEmpty ? map['abstract'] as String : '',
+      ['section'].isNotEmpty ? map['section'] as String : '',
     );
   }
-
-  // factory Article.fromJson(String source) =>
-  //     Article.fromMap(json.decode(source) as Map<String, dynamic>);
 }

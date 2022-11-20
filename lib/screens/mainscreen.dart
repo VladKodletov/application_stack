@@ -6,6 +6,36 @@ import 'package:application_websocket/screens/article_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+List<String> section = [
+  "home",
+  "arts",
+  "automobiles",
+  "books",
+  "business",
+  "fashion",
+  "food",
+  "health",
+  "home",
+  "insider",
+  "magazine",
+  "movies",
+  "nyregion",
+  "obituaries",
+  "opinion",
+  "politics",
+  "realestate",
+  "science",
+  "sports",
+  "sundayreview",
+  "technology",
+  "theater",
+  "t - magazine",
+  "travel",
+  "upshot",
+  "us",
+  "world"
+];
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -13,16 +43,22 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
+  late final _tabController =
+      TabController(length: section.length, vsync: this);
   List<Article> _articles = [];
+
   @override
   void initState() {
     super.initState();
-    _getArticles();
+
+    getArticles();
   }
 
-  _getArticles() async {
-    List<Article> articles = await APIService().getArticlesSection('home');
+  getArticles() async {
+     List<Article> articles =
+        await APIService().getArticlesSection(section[3]);
     setState(() {
       _articles = articles;
     });
@@ -40,14 +76,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('New news'),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) {
-            var currentIndex = value;
-          },
+          onTap: (value) {},
           selectedFontSize: 16,
           selectedItemColor: Colors.black,
           items: const [
@@ -72,82 +107,121 @@ class _MainScreenState extends State<MainScreen> {
               ? Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 70.0),
-                      child: ListView.builder(
-                        itemCount: _articles.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Material(
-                                borderRadius: BorderRadius.circular(12),
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () {
-                                    _launchURL(_articles[index].urlArticle);
-                                    // Navigator.of(context).push(
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) {
-                                    //       return ArticleScreen(
-                                    //         url: _articles[index].urlArticle,
-                                    //         // summary: _articles[index].summary,
-                                    //       );
-                                    //     },
-                                    //   ),
-                                    // );
-                                  },
-                                  child: ListTile(
-                                    visualDensity: VisualDensity.standard,
-                                    title: Text(
-                                      _articles[index].title,
-                                    ),
-                                    dense: true,
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _articles[index].summary,
+                      padding: const EdgeInsets.only(top: 120.0),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: section
+                            .map(
+                              (tab) => ListView.builder(
+                                itemCount: _articles.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      Material(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: InkWell(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          onTap: () {
+                                            _launchURL(
+                                                _articles[index].urlArticle);
+                                            // Navigator.of(context).push(
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) {
+                                            //       return ArticleScreen(
+                                            //         url: _articles[index].urlArticle,
+                                            //         // summary: _articles[index].summary,
+                                            //       );
+                                            //     },
+                                            //   ),
+                                            // );
+                                          },
+                                          child: ListTile(
+                                            visualDensity:
+                                                VisualDensity.standard,
+                                            title: Text(
+                                              _articles[index].title,
+                                            ),
+                                            dense: true,
+                                            subtitle: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  _articles[index].summary,
+                                                ),
+                                                Text(
+                                                  _articles[index]
+                                                      .sectionArticle,
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                              ],
+                                            ),
+                                            leading: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: Image.network(
+                                                _articles[index].imageURL,
+                                                width: mediaQuery.size.width *
+                                                    0.20,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        Text(
-                                          _articles[index].sectionArticle,
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      ],
-                                    ),
-                                    leading: ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.network(
-                                        _articles[index].imageURL,
-                                        width: mediaQuery.size.width * 0.20,
-                                        fit: BoxFit.cover,
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                      const SizedBox(
+                                        height: 5,
+                                      )
+                                    ],
+                                  );
+                                },
                               ),
-                              const SizedBox(
-                                height: 5,
-                              )
-                            ],
-                          );
-                        },
+                            )
+                            .toList(),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: TextField(
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          fillColor: Colors.white.withAlpha(230),
-                          labelText: 'Search',
-                          prefixIcon: const Icon(Icons.search),
-                          border: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                        ),
+                      child: Column(
+                        children: [
+                          TextField(
+                            onChanged: (value) {},
+                            decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              filled: true,
+                              fillColor: Colors.white.withAlpha(230),
+                              labelText: 'Search',
+                              prefixIcon: const Icon(Icons.search),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12))),
+                            ),
+                          ),
+                          DefaultTabController(
+                            initialIndex: 0,
+                            length: section.length,
+                            child: TabBar(
+                              onTap: (value) {
+                                setState(() {
+                                  _tabController.index = value;
+                                });
+                                getArticles();
+                              },
+                              controller: _tabController,
+                              indicatorColor: Colors.white,
+                              isScrollable: true,
+                              tabs: section
+                                  .map((tab) => Tab(
+                                        icon: Text(tab),
+                                      ))
+                                  .toList(),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],
