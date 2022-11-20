@@ -1,6 +1,6 @@
 import 'package:application_websocket/api/api_service.dart';
 import 'package:application_websocket/models/article.dart';
-import 'package:application_websocket/widgets/search.dart';
+import 'package:application_websocket/models/list_section.dart';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,45 +14,50 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
+  List<String> category = Section().section;
   late final _tabController =
-      TabController(length: section.length, vsync: this);
+      TabController(length: category.length, vsync: this);
   List<Article> _articles = [];
+
+  final myController = TextEditingController();
+
+  var _filteredArticles = <Article>[];
+
   bool _loading = true;
-  List<String> section = [
-    "home",
-    "arts",
-    "automobiles",
-    "business",
-    "fashion",
-    "food",
-    "home",
-    "movies",
-    "nyregion",
-    "obituaries",
-    "opinion",
-    "politics",
-    "realestate",
-    "sports",
-    "sundayreview",
-    "technology",
-    "theater",
-    "upshot",
-    "us",
-  ];
+
+  getArticles() async {
+    List<Article> articles =
+        await APIService().getArticlesSection(category[_tabController.index]);
+    setState(() {
+      _articles = articles;
+      _loading = false;
+    });
+  }
+
+  void _searchArticles() {
+    final query = myController.text;
+    if (query.isNotEmpty) {
+      _filteredArticles = _articles.where((Article article) {
+        return article.title.contains(query) ||
+            article.sectionArticle.contains(query);
+      }).toList();
+    } else {
+      setState(() {
+        _filteredArticles = _articles;
+      });
+    }
+    setState(() {
+      _filteredArticles;
+      _tabController;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     getArticles();
-  }
-
-  getArticles() async {
-    List<Article> articles =
-        await APIService().getArticlesSection(section[_tabController.index]);
-    setState(() {
-      _articles = articles;
-      _loading = false;
-    });
+    _tabController.addListener(_searchArticles);
+    myController.addListener(_searchArticles);
   }
 
   _launchURL(String url) async {
@@ -102,102 +107,140 @@ class _MainScreenState extends State<MainScreen>
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 120.0),
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: section
-                            .map(
-                              (tab) => ListView.builder(
-                                itemCount: _articles.length,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    children: [
-                                      Material(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: InkWell(
+                      child: DefaultTabController(
+                        length: category.length,
+                        child: TabBarView(
+                          // controller: _tabController,
+                          children: category
+                              .map(
+                                (tab) => ListView.builder(
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
+                                  itemCount: _filteredArticles.length,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        Material(
                                           borderRadius:
                                               BorderRadius.circular(12),
-                                          onTap: () {
-                                            _launchURL(
-                                                _articles[index].urlArticle);
-                                            // Navigator.of(context).push(
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) {
-                                            //       return ArticleScreen(
-                                            //         url: _articles[index].urlArticle,
-                                            //         // summary: _articles[index].summary,
-                                            //       );
-                                            //     },
-                                            //   ),
-                                            // );
-                                          },
-                                          child: ListTile(
-                                            visualDensity:
-                                                VisualDensity.standard,
-                                            title: Text(
-                                              _articles[index].title,
-                                            ),
-                                            dense: true,
-                                            subtitle: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  _articles[index].summary,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            onTap: () {
+                                              _launchURL(
+                                                  _filteredArticles[index]
+                                                      .urlArticle);
+                                            },
+                                            child: ListTile(
+                                              visualDensity:
+                                                  VisualDensity.standard,
+                                              title: Text(
+                                                _filteredArticles[index].title,
+                                              ),
+                                              dense: true,
+                                              subtitle: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    maxLines: 3,
+                                                    locale: const Locale.fromSubtags(
+                                                        countryCode: 'UK'),
+                                                    _filteredArticles[index]
+                                                        .summary,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        locale:
+                                                            const Locale.fromSubtags(
+                                                                countryCode:
+                                                                    'UK'),
+                                                        _filteredArticles[index]
+                                                            .sectionArticle,
+                                                        style: const TextStyle(
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            locale: Locale
+                                                                .fromSubtags(
+                                                                    countryCode:
+                                                                        'UK'),
+                                                            color: Colors.red),
+                                                      ),
+                                                      Text(
+                                                        '${DateTime.now().difference(DateTime.parse(_filteredArticles[index].dateArticle)).inHours} hours ago',
+                                                        maxLines: 3,
+                                                        locale:
+                                                            const Locale.fromSubtags(
+                                                                countryCode:
+                                                                    'UK'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              leading: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.network(
+                                                  _filteredArticles[index]
+                                                      .imageURL,
+                                                  width: mediaQuery.size.width *
+                                                      0.20,
+                                                  fit: BoxFit.cover,
                                                 ),
-                                                Text(
-                                                  _articles[index]
-                                                      .sectionArticle,
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ],
-                                            ),
-                                            leading: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              child: Image.network(
-                                                _articles[index].imageURL!,
-                                                width: mediaQuery.size.width *
-                                                    0.20,
-                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      )
-                                    ],
-                                  );
-                                },
-                              ),
-                            )
-                            .toList(),
+                                        const SizedBox(
+                                          height: 5,
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       child: Column(
                         children: [
-                          const SearchWidget(),
-                          DefaultTabController(
-                            initialIndex: 0,
-                            length: section.length,
-                            child: TabBar(
-                              onTap: (value) {
-                                _loading = true;
-                                getArticles();
-                              },
-                              controller: _tabController,
-                              indicatorColor: Colors.white,
-                              isScrollable: true,
-                              tabs: section
-                                  .map((tab) => Tab(
-                                        icon: Text(tab),
-                                      ))
-                                  .toList(),
+                          TextField(
+                            autofocus: true,
+                            controller: myController,
+                            decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              filled: true,
+                              fillColor: Colors.white.withAlpha(230),
+                              labelText: 'Search',
+                              prefixIcon: const Icon(Icons.search),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12))),
                             ),
+                          ),
+                          TabBar(
+                            onTap: (value) {
+                              getArticles();
+                            },
+                            controller: _tabController,
+                            indicatorColor: Colors.white,
+                            isScrollable: true,
+                            tabs: category
+                                .map((tab) => Tab(
+                                      icon: Text(tab),
+                                    ))
+                                .toList(),
                           )
                         ],
                       ),

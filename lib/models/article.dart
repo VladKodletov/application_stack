@@ -1,3 +1,4 @@
+
 class Article {
   final String title;
   final String byLine;
@@ -17,7 +18,7 @@ class Article {
       map['url'] as String,
       map['multimedia'][1]['url'] ??
           'https://dev.jollibeegroup.com/wp-content/themes/main/assets/img/placeholder/no-image-placeholder.jpg',
-      map['updated_date'] as String,
+      map['published_date'] as String,
       map['abstract'] as String,
       map['section'] as String,
     );
