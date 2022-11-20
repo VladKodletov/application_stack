@@ -1,4 +1,5 @@
 import 'package:application_websocket/api/api_service.dart';
+import 'package:application_websocket/components/bottom_bar.dart';
 import 'package:application_websocket/models/article.dart';
 import 'package:application_websocket/screens/article_screen.dart';
 
@@ -44,6 +45,9 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text('New news'),
       ),
       bottomNavigationBar: BottomNavigationBar(
+          onTap: (value) {
+            var currentIndex = value;
+          },
           selectedFontSize: 16,
           selectedItemColor: Colors.black,
           items: const [
