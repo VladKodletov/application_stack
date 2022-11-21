@@ -19,7 +19,6 @@ class APIService {
 
       data['results'].forEach(
         (articleMap) {
-          
           articles.add(Article.fromMap(articleMap));
         },
       );

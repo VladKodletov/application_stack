@@ -20,9 +20,7 @@ class _MainScreenState extends State<MainScreen>
   List<Article> _articles = [];
 
   final myController = TextEditingController();
-
   var _filteredArticles = <Article>[];
-
   bool _loading = true;
 
   getArticles() async {
@@ -34,30 +32,24 @@ class _MainScreenState extends State<MainScreen>
     });
   }
 
-  void _searchArticles() {
+  _searchArticles() async {
+    await getArticles();
     final query = myController.text;
     if (query.isNotEmpty) {
       _filteredArticles = _articles.where((Article article) {
         return article.title.contains(query) ||
             article.sectionArticle.contains(query);
       }).toList();
+      setState(() {
+        _filteredArticles;
+        _loading = false;
+      });
     } else {
       setState(() {
         _filteredArticles = _articles;
+        _loading = false;
       });
     }
-    setState(() {
-      _filteredArticles;
-      _tabController;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getArticles();
-    _tabController.addListener(_searchArticles);
-    myController.addListener(_searchArticles);
   }
 
   _launchURL(String url) async {
@@ -67,6 +59,13 @@ class _MainScreenState extends State<MainScreen>
     } else {
       throw 'Could not launch $uri';
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _searchArticles();
+    myController.addListener(_searchArticles);
   }
 
   @override
@@ -110,7 +109,7 @@ class _MainScreenState extends State<MainScreen>
                       child: DefaultTabController(
                         length: category.length,
                         child: TabBarView(
-                          // controller: _tabController,
+                          controller: _tabController,
                           children: category
                               .map(
                                 (tab) => ListView.builder(
@@ -144,7 +143,8 @@ class _MainScreenState extends State<MainScreen>
                                                 children: [
                                                   Text(
                                                     maxLines: 3,
-                                                    locale: const Locale.fromSubtags(
+                                                    locale: const Locale
+                                                            .fromSubtags(
                                                         countryCode: 'UK'),
                                                     _filteredArticles[index]
                                                         .summary,
@@ -155,10 +155,9 @@ class _MainScreenState extends State<MainScreen>
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
-                                                        locale:
-                                                            const Locale.fromSubtags(
-                                                                countryCode:
-                                                                    'UK'),
+                                                        locale: const Locale
+                                                                .fromSubtags(
+                                                            countryCode: 'UK'),
                                                         _filteredArticles[index]
                                                             .sectionArticle,
                                                         style: const TextStyle(
@@ -174,10 +173,9 @@ class _MainScreenState extends State<MainScreen>
                                                       Text(
                                                         '${DateTime.now().difference(DateTime.parse(_filteredArticles[index].dateArticle)).inHours} hours ago',
                                                         maxLines: 3,
-                                                        locale:
-                                                            const Locale.fromSubtags(
-                                                                countryCode:
-                                                                    'UK'),
+                                                        locale: const Locale
+                                                                .fromSubtags(
+                                                            countryCode: 'UK'),
                                                       ),
                                                     ],
                                                   ),
@@ -214,7 +212,6 @@ class _MainScreenState extends State<MainScreen>
                       child: Column(
                         children: [
                           TextField(
-                            autofocus: true,
                             controller: myController,
                             decoration: InputDecoration(
                               floatingLabelBehavior:
@@ -231,7 +228,7 @@ class _MainScreenState extends State<MainScreen>
                           ),
                           TabBar(
                             onTap: (value) {
-                              getArticles();
+                              _searchArticles();
                             },
                             controller: _tabController,
                             indicatorColor: Colors.white,
