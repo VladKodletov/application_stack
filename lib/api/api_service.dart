@@ -18,9 +18,7 @@ class APIService {
       Map<String, dynamic> data = jsonDecode(response.body);
 
       data['results'].forEach(
-        (articleMap) {
-          articles.add(Article.fromMap(articleMap));
-        },
+        (articleMap) => articles.add(Article.fromMap(articleMap)),
       );
       return articles;
     } catch (error) {
