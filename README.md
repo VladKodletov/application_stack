@@ -1,16 +1,18 @@
-# application_stack
+<h1 align="center">New news app.</h1>
+<h2 align="center">
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Сверстал UI приложения и реализовал подключение к Times Newswire API с помощью архитектуры сетевого взаимодействия REST. 
+Используя HTTPS запросы и REST архитектуру сетевого взаимодействия, десериализуя JSON формат данных. 
+Реализовал возможность открытия полной версии статьи по клику элемент в списке.
+![20221121_133427](https://user-images.githubusercontent.com/108389045/202994769-1253e0b9-9b7e-447a-a110-3743fae07964.gif)
 
-A few resources to get you started if this is your first Flutter project:
+## - Создал переключатели-табы рубрик новостей
+![20221121_133626](https://user-images.githubusercontent.com/108389045/202994786-43509c4b-e683-4519-a62b-c55d8c877de0.gif)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Реализовал поиск в отображаемом списке статей и по рубрике новости и по её заголовку
+![20221121_133806](https://user-images.githubusercontent.com/108389045/202994799-9b186208-25b1-4fc3-a1ee-3b83460f864b.gif)
+
+
