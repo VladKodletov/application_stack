@@ -42,12 +42,12 @@ class _MainScreenState extends State<MainScreen>
       }).toList();
       setState(() {
         _filteredArticles;
-        _loading = false;
+      
       });
     } else {
       setState(() {
         _filteredArticles = _articles;
-        _loading = false;
+      
       });
     }
   }
