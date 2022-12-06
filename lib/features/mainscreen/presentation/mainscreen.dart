@@ -1,6 +1,6 @@
-import 'package:application_websocket/api/api_service.dart';
-import 'package:application_websocket/models/article.dart';
-import 'package:application_websocket/models/list_section.dart';
+import 'package:application_websocket/core/api/api_service.dart';
+import 'package:application_websocket/core/models/article.dart';
+import 'package:application_websocket/core/models/list_section.dart';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
