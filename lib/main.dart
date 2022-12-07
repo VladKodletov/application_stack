@@ -1,4 +1,4 @@
-import 'package:application_websocket/features/mainscreen/presentation/mainscreen.dart';
+import 'package:application_websocket/features/mainscreen/presentation/screen/mainscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
