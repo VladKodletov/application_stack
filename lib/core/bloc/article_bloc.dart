@@ -1,7 +1,8 @@
-import 'package:application_websocket/core/api/article_repository.dart';
-import 'package:application_websocket/core/models/article.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+
+import 'package:application_websocket/core/api/article_repository.dart';
+import 'package:application_websocket/core/models/article.dart';
 
 part 'article_event.dart';
 part 'article_state.dart';
