@@ -2,7 +2,7 @@ class Article {
   final String title;
   final String byLine;
   final String urlArticle;
-  final String imageURL;
+  final String? imageURL;
   final String dateArticle;
   final String summary;
   final String sectionArticle;

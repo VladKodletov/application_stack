@@ -186,7 +186,7 @@ class _MainScreenState extends State<MainScreen>
                                                     BorderRadius.circular(12),
                                                 child: Image.network(
                                                   _filteredArticles[index]
-                                                      .imageURL,
+                                                      .imageURL!,
                                                   width: mediaQuery.size.width *
                                                       0.20,
                                                   fit: BoxFit.cover,
