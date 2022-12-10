@@ -12,21 +12,17 @@ class APIService {
     };
     Uri uri =
         Uri.https(_defaultURL, '/svc/topstories/v2/$section.json', parameters);
-    List<Article> articles = [];
-    var response = await http.get(uri);
+    try {
+      List<Article> articles = [];
+      var response = await http.get(uri);
+      Map<String, dynamic> data = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      try {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        data['results'].forEach(
-          (articleMap) => articles.add(Article.fromMap(articleMap)),
-        );
-        return articles;
-      } catch (error) {
-        throw error.toString();
-      }
-    } else {
-      throw Exception('Error fetching articles');
+      data['results'].forEach(
+        (articleMap) => articles.add(Article.fromMap(articleMap)),
+      );
+      return articles;
+    } catch (error) {
+      throw error.toString();
     }
   }
 }
@@ -34,6 +30,7 @@ class APIService {
 
 
 
+//TODO little corrected for bloc
 // import 'dart:convert';
 // import 'package:application_websocket/core/models/article.dart';
 // import 'package:http/http.dart' as http;
@@ -48,17 +45,21 @@ class APIService {
 //     };
 //     Uri uri =
 //         Uri.https(_defaultURL, '/svc/topstories/v2/$section.json', parameters);
-//     try {
-//       List<Article> articles = [];
-//       var response = await http.get(uri);
-//       Map<String, dynamic> data = jsonDecode(response.body);
+//     List<Article> articles = [];
+//     var response = await http.get(uri);
 
-//       data['results'].forEach(
-//         (articleMap) => articles.add(Article.fromMap(articleMap)),
-//       );
-//       return articles;
-//     } catch (error) {
-//       throw error.toString();
+//     if (response.statusCode == 200) {
+//       try {
+//         Map<String, dynamic> data = jsonDecode(response.body);
+//         data['results'].forEach(
+//           (articleMap) => articles.add(Article.fromMap(articleMap)),
+//         );
+//         return articles;
+//       } catch (error) {
+//         throw error.toString();
+//       }
+//     } else {
+//       throw Exception('Error fetching articles');
 //     }
 //   }
 // }
