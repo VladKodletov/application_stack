@@ -27,6 +27,24 @@
 //   return sum;
 // }
 
-void main(List<String> args) {
-  print(3);
+import 'package:application_websocket/example2_bloc/bloc.dart';
+
+Future<void> main() async {
+  // final bloc = CounterBloc();
+  // //stream usage
+  // final subscription = bloc.stream.listen(print);
+
+  // bloc.add(CounterIncrement());
+  // await Future.delayed(Duration.zero);
+  // await subscription.cancel();
+  // await bloc.close();
+  CounterBloc()
+    ..add(CounterIncrement())
+    ..close();
+//basic usage
+  // print(bloc.state);
+  // bloc.add(CounterIncrement());
+  // await Future.delayed(Duration(seconds: 2));
+  // print(bloc.state);
+  // await bloc.close();
 }
