@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:application_websocket/core/models/article.dart';
+import 'package:application_websocket/features/mainscreen/data/models/article.dart';
 import 'package:http/http.dart' as http;
 
 class APIService {
