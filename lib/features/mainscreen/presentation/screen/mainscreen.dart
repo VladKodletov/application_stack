@@ -1,12 +1,10 @@
-import 'package:application_websocket/core/api/api_service.dart';
-import 'package:application_websocket/core/api/article_repository.dart';
-
-import 'package:application_websocket/core/models/article.dart';
-import 'package:application_websocket/core/models/list_section.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:application_websocket/features/mainscreen/data/api/api_service.dart';
+import 'package:application_websocket/features/mainscreen/data/api/article_repository.dart';
+import 'package:application_websocket/features/mainscreen/data/models/article.dart';
+import 'package:application_websocket/features/mainscreen/data/models/list_section.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,7 +15,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  List<String> category = Section().section;
+  List<String> category = Section.section;
   late final _tabController =
       TabController(length: category.length, vsync: this);
   List<Article> _articles = [];
@@ -73,7 +71,6 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final articleRepository = ArticleRepository();
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -117,8 +114,7 @@ class _MainScreenState extends State<MainScreen>
                               .map(
                                 (tab) => ListView.builder(
                                   keyboardDismissBehavior:
-                                      ScrollViewKeyboardDismissBehavior
-                                          .onDrag,
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
                                   itemCount: _filteredArticles.length,
                                   itemBuilder: (context, index) {
                                     return Column(
@@ -138,8 +134,7 @@ class _MainScreenState extends State<MainScreen>
                                               visualDensity:
                                                   VisualDensity.standard,
                                               title: Text(
-                                                _filteredArticles[index]
-                                                    .title,
+                                                _filteredArticles[index].title,
                                               ),
                                               dense: true,
                                               subtitle: Column(
@@ -162,30 +157,25 @@ class _MainScreenState extends State<MainScreen>
                                                       Text(
                                                         locale: const Locale
                                                                 .fromSubtags(
-                                                            countryCode:
-                                                                'UK'),
-                                                        _filteredArticles[
-                                                                index]
+                                                            countryCode: 'UK'),
+                                                        _filteredArticles[index]
                                                             .sectionArticle,
                                                         style: const TextStyle(
                                                             fontSize: 13,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w700,
+                                                                FontWeight.w700,
                                                             locale: Locale
                                                                 .fromSubtags(
                                                                     countryCode:
                                                                         'UK'),
-                                                            color:
-                                                                Colors.red),
+                                                            color: Colors.red),
                                                       ),
                                                       Text(
                                                         '${DateTime.now().difference(DateTime.parse(_filteredArticles[index].dateArticle)).inHours} hours ago',
                                                         maxLines: 3,
                                                         locale: const Locale
                                                                 .fromSubtags(
-                                                            countryCode:
-                                                                'UK'),
+                                                            countryCode: 'UK'),
                                                       ),
                                                     ],
                                                   ),
@@ -197,9 +187,8 @@ class _MainScreenState extends State<MainScreen>
                                                 child: Image.network(
                                                   _filteredArticles[index]
                                                       .imageURL!,
-                                                  width:
-                                                      mediaQuery.size.width *
-                                                          0.20,
+                                                  width: mediaQuery.size.width *
+                                                      0.20,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),

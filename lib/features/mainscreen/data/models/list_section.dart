@@ -1,5 +1,5 @@
 class Section {
-  final List<String> section = [
+  static final List<String> section = [
     "home",
     "arts",
     "automobiles",

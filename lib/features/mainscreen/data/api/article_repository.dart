@@ -1,6 +1,6 @@
 
-import 'package:application_websocket/core/api/api_service.dart';
-import 'package:application_websocket/core/models/article.dart';
+import 'package:application_websocket/features/mainscreen/data/api/api_service.dart';
+import 'package:application_websocket/features/mainscreen/data/models/article.dart';
 
 class ArticleRepository {
   final APIService _articleRepository = APIService();
