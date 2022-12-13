@@ -1,3 +1,26 @@
+part of 'articles_bloc.dart';
+
+abstract class ArticlesState extends Equatable {
+  const ArticlesState();
+
+
+  @override
+  List<Object> get props => [];
+}
+
+class ArticlesInitial extends ArticlesState {
+  final String section;
+
+  const ArticlesInitial({required this.section});
+}
+
+class ArticlesLoading extends ArticlesState {}
+
+class ArticlesSuccess extends ArticlesState {}
+
+class ArticlesFailure extends ArticlesState {}
+
+
 // part of 'articles_bloc.dart';
 
 // enum ArticlesStatus { initial, success, failure }
@@ -33,26 +56,3 @@
 //   // TODO: implement props
 //   List<Object?> get props => [status, articles, nameSection];
 // }
-
-
-part of 'articles_bloc.dart';
-
-abstract class ArticlesState extends Equatable {
-  const ArticlesState();
-
-
-  @override
-  List<Object> get props => [];
-}
-
-class ArticlesInitial extends ArticlesState {
-  final String section;
-
-  const ArticlesInitial({required this.section});
-}
-
-class ArticlesLoading extends ArticlesState {}
-
-class ArticlesSuccess extends ArticlesState {}
-
-class ArticlesFailure extends ArticlesState {}
