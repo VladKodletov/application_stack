@@ -9,7 +9,7 @@ class Article extends Equatable {
   final String summary;
   final String sectionArticle;
 
-  Article(this.title, this.byLine, this.urlArticle, this.imageURL,
+  const Article(this.title, this.byLine, this.urlArticle, this.imageURL,
       this.dateArticle, this.summary, this.sectionArticle);
 
   factory Article.fromMap(Map<String, dynamic> map) {

@@ -4,7 +4,6 @@
 // import 'package:application_websocket/example/example_3_bloc/snackBar_blocListener/presentation/pages/snackbar_example.dart';
 import 'package:application_websocket/features/mainscreen/presentation/screen/mainscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());

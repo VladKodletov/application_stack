@@ -1,4 +1,3 @@
-import 'package:application_websocket/features/mainscreen/data/models/article.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
