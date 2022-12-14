@@ -12,17 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ColorBloc(),
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(primarySwatch: Colors.blueGrey),
-          home: const Scaffold(
-            // under:examples 8.0 flutter_bloc
-            // body: BlocScreen(),
-            // body: BlocScreen2(),
-            body: MainScreen(),
-          )),
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(primarySwatch: Colors.blueGrey),
+        home: const Scaffold(
+          // under:examples 8.0 flutter_bloc
+          // body: BlocScreen(),
+          // body: BlocScreen2(),
+          // body: SnackBarPage(),
+          // body: NavigationPage(),
+          body: MainScreen(),
+        ));
   }
 }

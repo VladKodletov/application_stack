@@ -1,4 +1,6 @@
-class Article {
+import 'package:equatable/equatable.dart';
+
+class Article extends Equatable {
   final String title;
   final String byLine;
   final String urlArticle;
@@ -22,4 +24,15 @@ class Article {
       map['section'] as String,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        title,
+        byLine,
+        urlArticle,
+        imageURL,
+        dateArticle,
+        summary,
+        sectionArticle
+      ];
 }
