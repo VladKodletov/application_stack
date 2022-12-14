@@ -39,6 +39,8 @@ dependencies:
   url_launcher: ^6.1.6
   http: ^0.13.5
   flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
+  meta: ^1.8.0
 
 
 dev_dependencies:

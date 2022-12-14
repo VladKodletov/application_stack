@@ -8,11 +8,6 @@ class ArticleInitialState extends ArticleState {}
 
 class ArticleLoadingState extends ArticleState {}
 
-class ArticleLoadedState extends ArticleState {
-  List<Article> loadedArticle;
-  ArticleLoadedState({
-    required this.loadedArticle,
-  });
-}
+class ArticleLoadedState extends ArticleState {}
 
 class ArticleErrorLoadingState extends ArticleState {}

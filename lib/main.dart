@@ -1,4 +1,3 @@
-import 'package:application_websocket/example2_bloc/bloc_screen.dart';
 import 'package:application_websocket/example_bloc/bloc.dart';
 import 'package:application_websocket/features/mainscreen/presentation/screen/mainscreen.dart';
 import 'package:flutter/material.dart';

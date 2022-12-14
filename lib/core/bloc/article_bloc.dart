@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import 'package:application_websocket/core/api/article_repository.dart';
-import 'package:application_websocket/core/models/article.dart';
 
 part 'article_event.dart';
 part 'article_state.dart';
@@ -16,10 +15,8 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
       emit(ArticleLoadingState());
 
       try {
-        final List<Article> loadedArticle =
-            await articleRepository.getSectionArticles(section);
         emit(
-          ArticleLoadedState(loadedArticle: loadedArticle),
+          ArticleLoadedState(),
         );
       } catch (_) {
         emit(ArticleErrorLoadingState());
