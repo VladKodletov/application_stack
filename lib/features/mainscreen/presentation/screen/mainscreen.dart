@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:application_websocket/features/mainscreen/data/api/api_service.dart';
-import 'package:application_websocket/features/mainscreen/data/api/article_repository.dart';
 import 'package:application_websocket/features/mainscreen/data/models/article.dart';
 import 'package:application_websocket/features/mainscreen/data/models/list_section.dart';
 
@@ -70,7 +69,6 @@ class _MainScreenState extends State<MainScreen>
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final articleRepository = ArticleRepository();
 
     return Scaffold(
       appBar: AppBar(

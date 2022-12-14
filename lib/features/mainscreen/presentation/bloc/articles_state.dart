@@ -30,16 +30,14 @@
 //   }
 
 //   @override
-//   // TODO: implement props
+
 //   List<Object?> get props => [status, articles, nameSection];
 // }
-
 
 part of 'articles_bloc.dart';
 
 abstract class ArticlesState extends Equatable {
   const ArticlesState();
-
 
   @override
   List<Object> get props => [];
